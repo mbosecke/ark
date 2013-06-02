@@ -1,0 +1,30 @@
+{
+  "name": "ark",
+  "version": "0.0.1",
+  "description": "ark\r ===",
+  "main": "ark.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbosecke/ark.git"
+  },
+  "keywords": [
+    "modular",
+    "javascript",
+    "framework"
+  ],
+  "author": "Mitchell Bosecke",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "67835d70aafa1ef2f1ba145783dbc66a3e4ad601",
+  "bugs": {
+    "url": "https://github.com/mbosecke/ark/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-concat": "~0.3.0"
+  }
+}
