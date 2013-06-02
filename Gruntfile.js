@@ -1,5 +1,17 @@
 module.exports = function(grunt) {
 
+	var mainFiles = [
+			'src/ark.js',
+			'src/ark.error.js',
+			'src/ark.logger.js',
+			'src/ark.bus.js',
+			'src/ark.singleton.js'
+		], jqueryExtensionFiles = [
+			'src/ark-jquery/ark.ajax.js',
+			'src/ark-jquery/ark.dom.js',
+			'src/ark-jquery/ark.event.js'
+		];
+
   // Project configuration.
   grunt.config.init({
     pkg: grunt.file.readJSON('package.json'),
@@ -10,28 +22,19 @@ module.exports = function(grunt) {
 				'<%= grunt.template.today("yyyy-mm-dd") %> */'
 		},
 		basic: {
-			src: [
-				'src/ark.js',
-				'src/ark.error.js',
-				'src/ark.logger.js',
-				'src/ark.bus.js',
-				'src/ark.singleton.js',
-			],
+			src: mainFiles,
 			dest: 'build/ark.js'
 		},
 		jquery: {
 			src: [
-				'src/ark.js',
-				'src/ark.error.js',
-				'src/ark.logger.js',
-				'src/ark.bus.js',
-				'src/ark.singleton.js',
-				'src/ark-jquery/ark.ajax.js',
-				'src/ark-jquery/ark.dom.js',
-				'src/ark-jquery/ark.event.js'
+				mainFiles, jqueryExtensionFiles
 			],
 			dest: 'build/ark-with-jquery-extension.js'
 		}
+	},
+	jshint: {
+		basic: mainFiles,
+		jquery: jqueryExtensionFiles
 	},
     uglify: {
       basic: {
@@ -47,9 +50,10 @@ module.exports = function(grunt) {
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['concat', 'uglify', 'jshint']);
 
 };

@@ -5,6 +5,7 @@
  * @param settings object
  */
 function Ark(settings) {
+	'use strict';
 
 	this.sandbox = {}; 
 	this.config = this.defaultConfig;
@@ -14,7 +15,9 @@ function Ark(settings) {
 	 * Perhaps this should be improved to a deep merge.
 	 */ 
 	for(var attr in settings){
-		this.config[attr] = settings[attr];
+		if(settings.hasOwnProperty(attr)){
+			this.config[attr] = settings[attr];
+		}
 	}
 	
 	this.modules = this.config.modules || [];
@@ -64,6 +67,8 @@ Ark.prototype.defaultConfig = {
  * @param message
  */
 Ark.prototype.log = function(message){
+	'use strict';
+	
 	if (this.sandbox.logger.log){
 		this.sandbox.logger.log('trace', '[Ark.js] ' + message);
 	}
@@ -79,6 +84,8 @@ Ark.prototype.log = function(message){
  * @param ex Exception
  */
 Ark.prototype.error = function(message, ex){
+	'use strict';
+	
 	if(this.sandbox.error && this.sandbox.error.handle){
 		this.sandbox.error.handle(message, ex);
 	}
@@ -88,6 +95,8 @@ Ark.prototype.error = function(message, ex){
  * The start function will bootstrap the extensions and modules.
  */
 Ark.prototype.start = function(){
+	'use strict';
+	
 	this.log('Starting Ark...');
 	
 	if(this.started){
@@ -116,12 +125,6 @@ Ark.prototype.start = function(){
 	}
 };
 
-
-
-Ark.prototype.stop = function(moduleId){
-	// TODO
-};
-
 /**
  * Instantiates and initializes an extension.
  * 
@@ -131,6 +134,8 @@ Ark.prototype.stop = function(moduleId){
  * @param config
  */
 Ark.prototype.initExtension = function(extension, config){
+	'use strict';
+	
 	if(this.started){
 		this.error('Can not initialize extension after Ark has already been started.');
 	}
@@ -165,6 +170,8 @@ Ark.prototype.initExtension = function(extension, config){
  * @param config	A config object for the module
  */
 Ark.prototype.register = function(moduleId, parent, creator){
+	'use strict';
+	
 	if(arguments.length === 2){
 		creator = parent;
 		parent = null;
@@ -180,11 +187,12 @@ Ark.prototype.register = function(moduleId, parent, creator){
  * Scans for module instances in the arks container
  * 
  */
-Ark.prototype.scan = function(container) {
+Ark.prototype.scan = function(containerElement) {
+	'use strict';
 	var i, 
 		element, 
 		moduleId, 
-		container = container || window.document.body, 
+		container = containerElement || window.document.body, 
 		moduleElements = container.querySelectorAll('[data-module]');
 	for (i = 0; i < moduleElements.length; i++) {
 		element = moduleElements[i];
@@ -200,6 +208,7 @@ Ark.prototype.scan = function(container) {
  * This function should not be used publicly.
  */
 Ark.prototype.initModule = function(moduleId, element ) {
+	'use strict';
 	
 	var module = this.modules[moduleId], 
 		instance = module.creator(this.sandbox, element);
@@ -220,10 +229,12 @@ Ark.prototype.initModule = function(moduleId, element ) {
 /**
  * Registers an extension.
  * 
- * @param extension 	The extension object
+ * @param extension		The extension object
  * @param config		The config object for the extension
  */
 Ark.prototype.extend = function(extension, config) {
+	'use strict';
+	
 	if (this.started) {
 		this.error('Can not register extension after Ark has already been started.');
 	} else{

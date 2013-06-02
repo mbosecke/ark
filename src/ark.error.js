@@ -1,5 +1,16 @@
 (function(Ark) {
 	'use strict';
+	
+	
+	var makeErrorHandler = function(instance, name, method){
+			return function(){
+				try{
+					return method.apply(instance, arguments);
+				}catch(ex){
+					errorExtension.handle(name + '(): ' + ex.message);
+				}
+			};
+		};
 
 	var errorExtension = {
 			name: 'error',
@@ -22,17 +33,11 @@
 				var self = this, name, method;
 				
 				for(name in instance){
-					method = instance[name];
-					if(typeof method === 'function'){
-						instance[name] = function(name, method){
-							return function(){
-								try{
-									return method.apply(instance, arguments);
-								}catch(ex){
-									self.handle(name + '(): ' + ex.message);
-								}
-							};
-						}(name, method);
+					if(instance.hasOwnProperty(name)){
+						method = instance[name];
+						if(typeof method === 'function'){
+							instance[name] = makeErrorHandler(instance, name, method);
+						}
 					}
 				}
 			}

@@ -5,9 +5,6 @@
 
 	var singletonExtension = {
 		name : 'singleton',
-		init : function(config) {
-
-		},
 		registerSingleton : function(singletonId, singleton) {
 			singletons[singletonId] = singleton;
 		},
