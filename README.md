@@ -6,14 +6,13 @@ Ark is a modular javascript framework.
 
 Building Ark
 ----------------------------
+Requires git and Node.js (instructions vary depending on OS).
 
 First, clone a copy of the main ark git repo by running:
 
 ```bash
 git clone git://github.com/mbosecke/ark.git
 ```
-
-Install git and Node.js (instructions vary depending on OS).
 
 Install the grunt-cli package so that you will have the correct version of grunt available from any project that needs it. This should be done as a global install:
 
