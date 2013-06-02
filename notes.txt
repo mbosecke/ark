@@ -1,0 +1,16 @@
+tree notes
+
+- clever way to start all modules using a data-attribute
+
+- an extension will modify the sandbox directly
+
+
+
+https://github.com/aurajs/aura
+https://github.com/aranm/scalable-javascript-architecture
+https://github.com/tcorral/Hydra.js/blob/master/src/Hydra.js
+
+
+
+
+http://api.jqueryui.com/jQuery.widget/
