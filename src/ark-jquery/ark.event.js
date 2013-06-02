@@ -28,5 +28,5 @@
 		
 	};
 
-	Ark.prototype.coreExtensions.push(eventExtension);
+	Ark.prototype._coreExtensions.push(eventExtension);
 }(Ark));

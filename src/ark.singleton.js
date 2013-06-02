@@ -13,5 +13,5 @@
 		}
 	};
 
-	Ark.prototype.coreExtensions.push(singletonExtension);
+	Ark.prototype._coreExtensions.push(singletonExtension);
 }(Ark));

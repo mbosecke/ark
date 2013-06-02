@@ -99,5 +99,5 @@
 		}
 	};
 
-	Ark.prototype.coreExtensions.push(domExtension);
+	Ark.prototype._coreExtensions.push(domExtension);
 }(Ark));

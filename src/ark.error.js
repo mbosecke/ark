@@ -43,5 +43,5 @@
 			}
 	};
 
-	Ark.prototype.coreExtensions.push(errorExtension);
+	Ark.prototype._coreExtensions.push(errorExtension);
 }(Ark));

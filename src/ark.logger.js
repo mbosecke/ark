@@ -46,5 +46,5 @@
 		}
 	};
 
-	Ark.prototype.coreExtensions.push(loggerExtension);
+	Ark.prototype._coreExtensions.push(loggerExtension);
 }(Ark));

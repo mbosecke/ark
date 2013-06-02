@@ -44,5 +44,5 @@
 		}
 	};
 
-	Ark.prototype.coreExtensions.push(busExtension);
+	Ark.prototype._coreExtensions.push(busExtension);
 }(Ark));
