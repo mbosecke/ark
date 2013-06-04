@@ -1,15 +1,16 @@
 (function(Ark) {
 	'use strict';
+	
+	Ark.extend('ajax', function(config){
+		return {
+			name : 'ajax',
+			init : function() {
 
-	var ajaxExtension = {
-		name : 'ajax',
-		init : function(config) {
+			},
+			request : function(url, settings){
+				return $.ajax(url, settings);
+			}
+		};
+	});
 
-		},
-		request : function(url, settings){
-			return $.ajax(url, settings);
-		}
-	};
-
-	Ark.prototype._coreExtensions.push(ajaxExtension);
 }(Ark));

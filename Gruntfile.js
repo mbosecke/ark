@@ -27,9 +27,9 @@ module.exports = function(grunt) {
 		},
 		jquery: {
 			src: [
-				mainFiles, jqueryExtensionFiles
+				jqueryExtensionFiles
 			],
-			dest: 'build/ark-with-jquery-extension.js'
+			dest: 'build/ark.jquery.js'
 		}
 	},
 	jshint: {
@@ -42,8 +42,8 @@ module.exports = function(grunt) {
         dest: 'build/ark.min.js'
       },
 	  jquery: {
-		src: 'build/ark-with-jquery-extension.js',
-		dest: 'build/ark-with-jquery-extension.min.js'
+		src: 'build/ark.jquery.js',
+		dest: 'build/ark.jquery.min.js'
 	  }
     }
   });

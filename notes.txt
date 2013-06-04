@@ -14,3 +14,8 @@ https://github.com/tcorral/Hydra.js/blob/master/src/Hydra.js
 
 
 http://api.jqueryui.com/jQuery.widget/
+
+
+
+- base extensions should have a strictly defined public api 
+- defined extensions on a global basis and then your app instance gets configured with which extensions it uses
