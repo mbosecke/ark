@@ -135,13 +135,6 @@
 	};
 
 	/**
-	 * Ark core extensions
-	 *
-	 * This object should not be used/manipulated publicly
-	 */
-	Ark.prototype._coreExtensions = [];
-
-	/**
 	 * Default config to be merged with user config. 
 	 * 
 	 * This object should not be used/manipulated publicly.
@@ -211,10 +204,10 @@
 			
 			this.sandbox[extension.name] = {};
 			
-			var extensionInstance = extension.factory();
+			var extensionInstance = extension.factory(config);
 			
-			if(typeof extension.init === 'function'){
-				extension.init.call(extensionInstance, config);
+			if(typeof extensionInstance.init === 'function'){
+				extensionInstance.init.call(extensionInstance);
 			}
 
 			for ( var property in extensionInstance) {
