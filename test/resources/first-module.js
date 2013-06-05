@@ -22,6 +22,9 @@
 				});
 				
 			},
+			events: {
+				
+			},
 			testLog: function(){
 				logger.log('info', 'This is an inheritance test');
 			}

@@ -1,8 +1,67 @@
 (function(window){
 
-	var userExtensions = [],
+	/**
+	 * Closure variables available
+	 */
+	var _defaultConfig,
+		_mergeModules,
 		coreExtensions = [],
+		userExtensions = [],
 		userModules = {};
+	
+
+	/**
+	 * Default config to be merged with user config. 
+	 * 
+	 * This object should not be used/manipulated publicly.
+	 */
+	_defaultConfig = {
+		container: null,
+		logger : {
+			level : 'error',
+			prefix : ''
+		},
+		debug: false
+	};
+	
+	
+	_mergeModules = function(baseModule, extendedModule){
+		'use strict';
+		var finalModule = {};
+		
+		// create a hidden variable to store the base module
+		finalModule.__base__ = baseModule;
+		
+		// a function to call the methods of the base module
+		finalModule._super = function(methodName, args){
+			var objectWithMethod = this;
+			while( objectWithMethod.hasOwnProperty(methodName) === false){
+				objectWithMethod = objectWithMethod.__base__;
+			}
+			objectWithMethod[methodName].apply(finalModule, args);
+		};
+		
+		// add properties from the baseModule to the final module
+		for(var prop in baseModule){
+			if(baseModule.hasOwnProperty(prop)){
+				if(prop != '__base__'){
+					finalModule[prop] = baseModule[prop];
+				}
+			}
+		}
+		
+		/* 
+		 * add properties from the extended module to the final module 
+		 * which might override the ones set by the base module.
+		 */
+		for(prop in extendedModule){
+			if(extendedModule.hasOwnProperty(prop)){
+				finalModule[prop] = extendedModule[prop];
+			}
+		}
+		 
+		return finalModule;
+	};
 	
 	/**
 	 * Ark constructor
@@ -13,7 +72,7 @@
 		'use strict';
 
 		this.sandbox = {}; 
-		this.config = this._defaultConfig;
+		this.config = _defaultConfig;
 		
 		/* 
 		 * Shallow merge of user settings with default settings.
@@ -34,6 +93,12 @@
 		this._log('Ark constructed');
 	}
 	
+	/**
+	 * Registers a core extension
+	 * 
+	 * @param name
+	 * @param factory
+	 */
 	Ark._coreExtend = function(name, factory){
 		coreExtensions.push({
 			name: name,
@@ -42,9 +107,10 @@
 	};
 	
 	/**
-	 * Registers an extension.
+	 * Registers a user extension
 	 * 
-	 * @param extension		The extension object
+	 * @param name
+	 * @param factory
 	 */
 	Ark.extend = function(name, factory) {
 		'use strict';
@@ -58,7 +124,11 @@
 	
 
 	/**
-	 * Registers a module.
+	 * Register a user module
+	 * 
+	 * @param name
+	 * @param base
+	 * @param factory
 	 */
 	Ark.register = function(name, base, factory){
 		'use strict';
@@ -70,7 +140,8 @@
 
 		userModules[name] = {
 			base: base,
-			factory: factory
+			factory: factory,
+			instances : []
 		};
 	};
 	
@@ -114,8 +185,22 @@
 		}
 	};
 	
+	
+	/**
+	 * Full cleanup of the application.
+	 * 
+	 * Will call the "destroy" function of all user modules.
+	 */
 	Ark.prototype.stop = function(){
 		
+		for(var moduleId in this.modules){
+			if(this.modules.hasOwnProperty(moduleId)){
+				for(var instance in this.modules[instance].instances){
+					instance.destroy();
+				}
+			}
+		}
+		this.sandbox = null;
 	};
 
 
@@ -138,19 +223,6 @@
 		}
 	};
 
-	/**
-	 * Default config to be merged with user config. 
-	 * 
-	 * This object should not be used/manipulated publicly.
-	 */
-	Ark.prototype._defaultConfig = {
-		container: null,
-		logger : {
-			level : 'error',
-			prefix : ''
-		},
-		debug: false
-	};
 
 	/**
 	 * log function that delegates logging to the logging extension
@@ -187,7 +259,8 @@
 
 
 	/**
-	 * Instantiates and initializes an extension.
+	 * Initializes an extension by calling the factory
+	 * function.
 	 * 
 	 * This function should not be used publicly.
 	 * 
@@ -224,7 +297,9 @@
 	};
 
 	/**
-	 * method to register a new module with the ark.
+	 * Initializes a module. It will call the factory function
+	 * using sandbox and element as parameters and then if the 
+	 * returned object has an 'init' function, that will be called.
 	 * 
 	 * This function should not be used publicly.
 	 */
@@ -236,7 +311,7 @@
 		
 		if(module.base && userModules[module.base]){
 			var baseModule = userModules[module.base].factory(this.sandbox, element);
-			instance = this._mergeModules(baseModule, instance);
+			instance = _mergeModules(baseModule, instance);
 		}
 		
 		/*
@@ -247,52 +322,40 @@
 			this.sandbox.error.sanitize(instance);
 		}
 		
+		module.instances.push(instance);
+		
 		// call the init function of the module
-		instance.init.call(instance);
+		instance.init();
+		
+		// register the events of the module with the bus
+		if(instance.hasOwnProperty('events')){
+			var events = instance.events;
+			
+			// loop through the channels
+			for(var channel in instance.events){
+				if(events.hasOwnProperty(channel)){
+					
+					// loop through the events of each channel
+					for(var event in channel){
+						if(channel.hasOwnProperty(event)){
+							
+							// register with bus
+							this.sandbox.bus.listen(channel, event, channel.event, instance);
+						}
+					}
+				}
+			}
+		}
 		return instance;
 	};
 
 
-	Ark.prototype._mergeModules = function(baseModule, extendedModule){
-		'use strict';
-		var finalModule = {};
-		
-		// create a hidden variable to store the base module
-		finalModule.__base__ = baseModule;
-		
-		// a function to call the methods of the base module
-		finalModule._super = function(methodName, args){
-			var objectWithMethod = this;
-			while( objectWithMethod.hasOwnProperty(methodName) === false){
-				objectWithMethod = objectWithMethod.__base__;
-			}
-			objectWithMethod[methodName].apply(finalModule, args);
-		};
-		
-		// add properties from the baseModule to the final module
-		for(var prop in baseModule){
-			if(baseModule.hasOwnProperty(prop)){
-				if(prop != '__base__'){
-					finalModule[prop] = baseModule[prop];
-				}
-			}
-		}
-		
-		/* 
-		 * add properties from the extended module to the final module 
-		 * which might override the ones set by the base module.
-		 */
-		for(prop in extendedModule){
-			if(extendedModule.hasOwnProperty(prop)){
-				finalModule[prop] = extendedModule[prop];
-			}
-		}
-		 
-		return finalModule;
-	};
+
 	
 	
-	// add Ark to the global namespace
+	/**
+	 * add Ark to the global namespace
+	 */
 	window.Ark = Ark;
 	
 }(window));

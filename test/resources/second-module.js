@@ -13,9 +13,14 @@
 	
 				//dom.text(element, 'this is a second');
 	
-				bus.listen('main', 'first-module-click', this.eventHandler, this);
+				//bus.listen('main', 'first-module-click', this.eventHandler, this);
 				
 				this._super('testLog');
+			},
+			events: {
+				'main' : {
+					'first-module-click': this.eventHandler
+				}
 			},
 			eventHandler : function(data){
 				timesClicked++;
