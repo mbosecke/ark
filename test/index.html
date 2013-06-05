@@ -1,0 +1,32 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Ark Test Suite</title>
+	<link rel="Stylesheet" media="screen" href="resources/ark-testing.css" />
+	<link rel="Stylesheet" media="screen" href="resources/qunit-1.11.0.css" />
+	<script src="resources/qunit-1.11.0.js"></script>
+	<script src="resources/jquery-1.10.1.min.js"></script>
+	<script src="../build/ark.js"></script>
+	<script src="../build/ark.jquery.js"></script>
+	
+	<!-- user modules -->
+	<script src="resources/first-module.js"></script>
+	<script src="resources/second-module.js"></script>
+	
+	<!-- qunit tests -->
+	<script src="unit/core.js"></script>
+	
+</head>
+
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
+		<div id="first-module" data-ark-module="first-module" class="module">
+			<h2>First Module</h2>
+		</div>
+		<div id="second-module" data-ark-module="second-module" class="module">
+			<h2>Second Module</h2>
+		</div>
+	</div>
+</body>
+</html>

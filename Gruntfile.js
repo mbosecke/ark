@@ -31,6 +31,9 @@ module.exports = function(grunt) {
 			],
 			dest: 'build/ark.jquery.js'
 		}
+	},	
+	qunit: {
+		all: ['test/index.html']
 	},
 	jshint: {
 		basic: mainFiles,
@@ -52,8 +55,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
 
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'uglify', 'jshint']);
+  grunt.registerTask('test', [ 'concat', 'qunit']);
+  grunt.registerTask('default', [ 'concat', 'qunit', 'uglify', 'jshint']);
 
 };

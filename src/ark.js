@@ -113,6 +113,10 @@
 			this.started = true;
 		}
 	};
+	
+	Ark.prototype.stop = function(){
+		
+	};
 
 
 
