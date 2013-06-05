@@ -1,11 +1,9 @@
-Ark
-===
+# Ark
 
 Ark is a modular javascript framework.
 
 
-Building Ark
-----------------------------
+## Building Ark
 Requires git and Node.js (instructions vary depending on OS).
 
 First, clone a copy of the main ark git repo by running:
@@ -32,10 +30,18 @@ Make sure you have `grunt` installed by testing:
 grunt -version
 ```
 
-Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of Ark, type the following:
+Then, to get a complete, unit tested (w/ Qunit.js), minified (w/ Uglify.js), linted (w/ JSHint) version of Ark, type the following:
 
 ```bash
 grunt
 ```
 
-The built version of Ark will be put in the `build/` subdirectory, along with the minified copy.
+The built version of Ark will be put in the `build/` subdirectory, along with the minified copy as well as the jquery extensions.
+
+
+#### Unit Tests
+
+To just run the unit tests you can either visit `test/index.html` in your browser or use grunt:
+```
+grunt test
+```
