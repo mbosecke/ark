@@ -11,22 +11,23 @@
 			init : function() {
 				logger.log('info', 'Second module initialized.');
 	
-				//dom.text(element, 'this is a second');
-	
-				//bus.listen('main', 'first-module-click', this.eventHandler, this);
+				//bus.listen('first-module-click', this.clickHandler, this);
 				
 				this._super('testLog');
 			},
 			events: {
-				'main' : {
-					'first-module-click': this.eventHandler
+				'first-module-click': function(event){
+					this.clickHandler(event);
 				}
 			},
-			eventHandler : function(data){
+			clickHandler : function(data){
 				timesClicked++;
 				
-				//dom.text(element, timesClicked);
-				logger.log('warn', 'This element now has the following text: ' + dom.text(element));
+				var $ele = $(element);
+				var $header = $ele.find('h2');
+				$header.text(timesClicked);
+				
+				logger.log('warn', 'This element now has the following text: ' + $ele.text());
 				logger.log('info', 'Second module registered click from first module');
 				
 				if(timesClicked > 2){

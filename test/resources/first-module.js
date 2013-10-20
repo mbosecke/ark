@@ -4,21 +4,20 @@
 	Ark.register('first-module', function(sandbox, element){
 			
 		var logger = sandbox.logger,
-			bus = sandbox.bus,
-			dom = sandbox.dom,
-			event = sandbox.event;
+			bus = sandbox.bus;
 		
 		return {
 			init: function(){
 				
 				logger.log('info', 'First module initialized.');
 				
-				var header = element.getElementsByTagName('h2')[0];
-				dom.text(header, 'First Module Initialized');
+				var $ele = $(element);
+				var $header = $ele.find('h2');
+				$header.text('First Module Initialized');
 				
-				event.on(element, 'click', function(event){
+				$ele.on('click', function(event){
 					logger.log('trace', 'First module clicked.');
-					bus.notify('main', 'first-module-click', event);
+					bus.notify('first-module-click', event);
 				});
 				
 			},

@@ -1,6 +1,6 @@
 (function(){
 
-	var testApplication, firstModule, secondModule;
+	var testApplication, $firstModule, $secondModule;
 
 	module("core", {
 		setup: function(){
@@ -13,11 +13,11 @@
 				debug: true
 			});
 			
-			firstModule = document.getElementById('first-module');
-			secondModule = document.getElementById('second-module');
+			$firstModule = $('#first-module');
+			$secondModule = $('#second-module');
 		
 		}, teardown: function(){
-			testApplication = null;
+			testApplication.stop();
 		}
 	}); 
 
@@ -29,10 +29,10 @@
 	});
 	
 	test("Ark starting", function(){
-		var header = firstModule.children[0];
-		strictEqual("First Module", header.textContent, 'first module has correct text before initialization');
+		var $header = $firstModule.find('h2');
+		strictEqual("First Module", $header.text() , 'first module has correct text before initialization');
 		testApplication.start();
-		strictEqual("First Module Initialized", header.textContent, 'first module has correct text after initialization');
+		strictEqual("First Module Initialized", $header.text(), 'first module has correct text after initialization');
 		
 	});
 	

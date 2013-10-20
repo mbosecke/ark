@@ -144,8 +144,6 @@
 			instances : []
 		};
 	};
-	
-	
 
 	/**
 	 * Ark version number
@@ -167,13 +165,12 @@
 			this._log('Initializing user extensions...');
 			for(var i = 0; i < userExtensions.length; i++){
 				var extension = userExtensions[i];
-				this._initExtension(userExtensions[i]);
+				this._initExtension(extension);
 			}
 			this._log('User extensions initialized.');
 			
 			// sanitize sandbox to handle errors
 			this.sandbox.error.sanitize(this.sandbox);
-			
 			
 			// init user modules
 			this._log('Initializing user modules...');
@@ -331,18 +328,12 @@
 		if(instance.hasOwnProperty('events')){
 			var events = instance.events;
 			
-			// loop through the channels
-			for(var channel in instance.events){
-				if(events.hasOwnProperty(channel)){
+			// loop through the events 
+			for(var event in events){
+				if(events.hasOwnProperty(event)){
 					
-					// loop through the events of each channel
-					for(var event in channel){
-						if(channel.hasOwnProperty(event)){
-							
-							// register with bus
-							this.sandbox.bus.listen(channel, event, channel.event, instance);
-						}
-					}
+					// register with bus
+					this.sandbox.bus.listen(event, events[event], instance);
 				}
 			}
 		}

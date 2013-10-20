@@ -6,10 +6,6 @@ module.exports = function(grunt) {
 			'src/ark.logger.js',
 			'src/ark.bus.js',
 			'src/ark.singleton.js'
-		], jqueryExtensionFiles = [
-			'src/ark-jquery/ark.ajax.js',
-			'src/ark-jquery/ark.dom.js',
-			'src/ark-jquery/ark.event.js'
 		];
 
   // Project configuration.
@@ -24,30 +20,19 @@ module.exports = function(grunt) {
 		basic: {
 			src: mainFiles,
 			dest: 'build/ark.js'
-		},
-		jquery: {
-			src: [
-				jqueryExtensionFiles
-			],
-			dest: 'build/ark.jquery.js'
 		}
 	},	
 	qunit: {
 		all: ['test/index.html']
 	},
 	jshint: {
-		basic: mainFiles,
-		jquery: jqueryExtensionFiles
+		main: mainFiles
 	},
     uglify: {
-      basic: {
-        src: 'build/ark.js',
-        dest: 'build/ark.min.js'
-      },
-	  jquery: {
-		src: 'build/ark.jquery.js',
-		dest: 'build/ark.jquery.min.js'
-	  }
+    	main: {
+    		src: 'build/ark.js',
+    		dest: 'build/ark.min.js'
+    	}
     }
   });
 

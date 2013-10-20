@@ -7,12 +7,9 @@
 		 * private variables/functions
 		 */
 		var handlers = {},
-			ensureEventExists = function(channel, event){
-				if (!handlers[channel]) {
-					handlers[channel] = {};
-				}
-				if (!handlers[channel][event]) {
-					handlers[channel][event] = [];
+			ensureEventExists = function(event){
+				if (!handlers[event]) {
+					handlers[event] = [];
 				}
 			};
 
@@ -23,10 +20,10 @@
 			},
 
 			
-			notify : function(channel, event, data) {
-				ensureEventExists(channel, event);
+			notify : function(event, data) {
+				ensureEventExists(event);
 
-				var eventHandlers = handlers[channel][event];
+				var eventHandlers = handlers[event];
 				for (var i = 0; i < eventHandlers.length; i++) {
 					var handler = eventHandlers[i];
 					if(typeof handler.handler === 'function'){
@@ -34,10 +31,10 @@
 					}
 				}
 			},
-			listen : function(channel, event, handler, context) {
-				ensureEventExists(channel, event);
+			listen : function(event, handler, context) {
+				ensureEventExists(event);
 
-				handlers[channel][event].push({
+				handlers[event].push({
 					handler: handler,
 					context: context
 				});
