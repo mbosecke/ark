@@ -36,7 +36,7 @@ Then, to get a complete, unit tested (w/ Qunit.js), minified (w/ Uglify.js), lin
 grunt
 ```
 
-The built version of Ark will be put in the `build/` subdirectory, along with the minified copy as well as the jquery extensions.
+The built version of Ark will be put in the `build/` subdirectory, along with the minified copy.
 
 
 #### Unit Tests
